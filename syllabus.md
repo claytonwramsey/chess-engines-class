@@ -1,4 +1,4 @@
-# COLL $XXX: Artificial Intelligence for Chess
+# COLL 110: Artificial Intelligence for Chess
 
 _Clayton Ramsey, Spring 2023_
 
