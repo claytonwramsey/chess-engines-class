@@ -74,3 +74,5 @@ Typically, this implementation is the fastest in nearly all cases.
 However, to get you all started with Rust,
 
 ## Your assignment
+
+For your assignment, you will implement a few

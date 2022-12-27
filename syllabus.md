@@ -2,7 +2,7 @@
 
 _Clayton Ramsey, Spring 2023_
 
-*cwr3@rice.edu*
+_cwr3@rice.edu_
 
 Chess was one of the definining problems in artificial intelligence research
 throughout the 20th century.
@@ -123,7 +123,7 @@ will try to issue an excused absence if possible.
 No texts are required for this class.
 However, I do recommend the following resources to aid you in your work:
 
-- **The Chess Programming Wiki: [https://www.chessprogramming.org]()**.
+- **The Chess Programming Wiki: [https://www.chessprogramming.org](https://www.chessprogramming.org)**.
   An exhaustive wiki covering an array of topics in the field of writing chess
   engines.
   However, some information on the wiki may be outdated or incorrect; I
@@ -133,7 +133,7 @@ However, I do recommend the following resources to aid you in your work:
   A thorough book covering the broad strokes of the design of chess engines.
   The book takes an emphasis on machine learning (hence the title) but is also
   a good general reference.
-- **Talkchess.com: [https://www.talkchess.com]()**.
+- **Talkchess.com: [https://www.talkchess.com](https://www.talkchess.com)**.
   The largest forum discussing chess engine programming.
   New developments in the chess programming world can often be found here.
 
@@ -155,9 +155,9 @@ Students are not required to use CLEAR.
 
 We will also use the following free software:
 
-- **Cute Chess**: [https://cutechess.com]().
+- **Cute Chess**: [https://cutechess.com](https://cutechess.com).
   A GUI for testing chess engines and running tournaments.
-- **Rustup**: [https://rustup.rs]().
+- **Rustup**: [https://rustup.rs](https://rustup.rs).
   A toolchain manager for the Rust programming language.
 
 ## Academic Integrity Policy
@@ -199,14 +199,14 @@ staff at Rice University are.
 Mandatory reporters are required to notify the Title IX office of all
 non-consensual interpersonal behavior.
 If you experience harassment, discrimination, or violence related to your sex or
-gender, seek support through the SAFE office ([safe.rice.edu]()) or email
-[titleixsupport@rice.edu]().
+gender, seek support through the SAFE office ([safe.rice.edu](safe.rice.edu)) or email
+[titleixsupport@rice.edu](titleixsupport@rice.edu).
 
 ## Disability
 
 If you have a disability which will affect your ability to take this course,
 please reach out both to me and to the Disability Resource Center:
-[https://drc.rice.edu/]() as soon as possible.
+[https://drc.rice.edu](https://drc.rice.edu) as soon as possible.
 
 I will work with you to make any and all reasonable accomodations for your
 disability.
