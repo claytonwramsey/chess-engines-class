@@ -51,14 +51,40 @@ this basically exists so I won't be sad and alone once you all find other things
 
 ---
 
-<!-- _class: lead -->
+<!-- class: lead -->
 
 # Chess review
 
 ---
 
-<!-- _class: lead -->
-
 ## En passant
 
 ![w:15cm](en_passant.png)
+
+---
+
+## Castling
+
+![w:15cm](castling.png)
+
+---
+
+## Promotion
+
+![w:15cm](promotion.png)
+
+---
+
+## Draw by repetition
+
+![w:15cm](hikaru.png)
+
+_Berlin draw's #1 fan._
+
+---
+
+## Fifty move rule
+
+shuffle shuffle
+
+---
