@@ -124,19 +124,6 @@ const fn create_step_attacks(dirs: &[Direction], max_dist: u8) -> [Bitboard; 64]
 #[must_use]
 /// Get the legal moves in a board.
 ///
-/// `M` is the generation mode of move generation: it specifies which subset of all legal moves to
-/// generate.
-/// There are currently 3 legal generation modes:
-///
-/// * `GenMode::All` will generate all legal moves.
-/// * `GenMode::Captures` will generate all captures, including en passant.
-/// * `GenMode::Quiets` will generate all quiet (i.e. non-capture) moves.
-///
-/// `T` is a tagger for moves: it contains a callback function to tag moves as
-/// they are generated so that the user can save on total heap allocations.
-/// If no tag is needed, you can use `coll110_hw2::game::NoTag` to avoid
-/// wasting effort tagging each move.
-///
 /// `get_moves()` will make no regard to whether the position is drawn by
 /// repetition, 50-move-rule, or by insufficient material.
 ///
