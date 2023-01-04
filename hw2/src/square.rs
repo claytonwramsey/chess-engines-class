@@ -110,6 +110,16 @@ impl Square {
     /// Create a Square from the given rank and file.
     ///
     /// The ranks run from 0 to 7 (instead of 1 through 8), and the files run from A to H.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coll110_hw2::Square;
+    ///
+    /// assert_eq!(Square::new(0, 0), Some(Square::A1));
+    /// assert_eq!(Square::new(0, 1), Some(Square::B1));
+    /// assert!(Square::new(25, 3).is_none());
+    /// ```
     pub fn new(rank: u8, file: u8) -> Option<Square> {
         Square::try_from((rank << 3) | file).ok()
     }
@@ -117,6 +127,16 @@ impl Square {
     #[inline(always)]
     #[must_use]
     /// Get the integer representing the rank (0 -> 1, ...) of this square.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coll110_hw2::Square;
+    ///
+    /// assert_eq!(Square::A1.rank(), 0);
+    /// assert_eq!(Square::B1.rank(), 0);
+    /// assert_eq!(Square::C5.rank(), 4);
+    /// ```
     pub const fn rank(self) -> u8 {
         self as u8 >> 3u8
     }
@@ -124,6 +144,16 @@ impl Square {
     #[inline(always)]
     #[must_use]
     /// Get the integer representing the file (0 -> A, ...) of this square.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coll110_hw2::Square;
+    ///
+    /// assert_eq!(Square::A1.file(), 0);
+    /// assert_eq!(Square::B1.file(), 1);
+    /// assert_eq!(Square::C5.file(), 2);
+    /// ```
     pub const fn file(self) -> u8 {
         self as u8 & 7u8
     }
@@ -131,6 +161,14 @@ impl Square {
     #[inline(always)]
     #[must_use]
     /// Get the Chebyshev distance to another square.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coll110_hw2::Square;
+    ///
+    /// assert_eq!(Square::A1.chebyshev_to(Square::B4), 3);
+    /// ```
     pub const fn chebyshev_to(self, rhs: Square) -> u8 {
         #[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
         {
@@ -242,6 +280,17 @@ impl Square {
     ///
     /// This function will behave safely if `bb` is nonzero.
     /// It will result in undefined behavior if `bb` is equal to `Bitboard::EMPTY`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coll110_hw2::{Square, Bitboard};
+    ///
+    /// assert_eq!(unsafe { Square::unsafe_from(Bitboard::new(1)) }, Square::A1);
+    /// assert_eq!(unsafe { Square::unsafe_from(Bitboard::from(Square::F5)) }, Square::F5);
+    /// assert_eq!(unsafe { Square::unsafe_from(Bitboard::ALL) }, Square::A1);
+    /// ```
+    ///
     pub unsafe fn unsafe_from(bb: Bitboard) -> Square {
         transmute(bb.trailing_zeros() as u8)
     }
@@ -264,6 +313,16 @@ impl Square {
     #[inline(always)]
     #[must_use]
     /// Determine whether three squares are aligned according to rook or bishop directions.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use coll110_hw2::Square;
+    ///
+    /// assert!(Square::aligned(Square::A1, Square::A3, Square::A2));
+    /// assert!(Square::aligned(Square::A1, Square::B2, Square::C3));
+    /// assert!(!Square::aligned(Square::A1, Square::A3, Square::C3));
+    /// ```
     pub fn aligned(sq1: Square, sq2: Square, sq3: Square) -> bool {
         Bitboard::line(sq1, sq2).contains(sq3)
     }
