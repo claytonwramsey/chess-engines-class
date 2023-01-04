@@ -43,6 +43,22 @@ BB(\{0, 22, 27\}) &= 2^0 + 2^{22} + 2^{27} \\
 \end{aligned}
 $$
 
+Here's how we can compute some important setwise operations with a bitboard "`a`" representing some
+set $A$:
+
+|  **Mathematical operation**   |      **Bitboard implementation**      |
+| :---------------------------: | :-----------------------------------: |
+|         $ A \cup B $          |               `a \| b`                |
+|         $ A \cap B $          |                `a & b`                |
+|      $ A \backslash B $       |               `a & !b`                |
+|    $ A \bigtriangleup B $     |                `a ^ b`                |
+| $ \min(A): A \neq \emptyset $ |         `a.trailing_zeros()`          |
+| $ \max(A): A \neq \emptyset $ |       `64 - a.leading_zeros()`        |
+|  $\{x: x > 0, x + 1 \in A\}$  |               `a >> 1`                |
+| $\{x: x < 64, x - 1 \in A\}$  |               `a << 1`                |
+| $ A \backslash \{\min(A)\} $  |             `a & (a - 1)`             |
+|            $\|A\|$            | to be implemented in this assignment! |
+
 Once we have a bitboard, we often have to compute the number of squares in a bitboard.
 This operation is called _population count_, sometimes abbreviated as _popcnt_.
 
@@ -70,9 +86,75 @@ fn total_material(b: &Board) -> u32 {
 
 In Rust, population count is already implemented for you via the function `u64::count_ones()` (and
 likewise for all other integer types).
-Typically, this implementation is the fastest in nearly all cases.
-However, to get you all started with Rust,
+Typically, this implementation is the fastest in nearly all cases - but that won't stop us from
+trying our own implementations!
 
 ## Your assignment
 
-For your assignment, you will implement a few
+For your assignment, you will implement a few population counting algorithms.
+Each of these will be relatively easy (I hope).
+A mathematical description of each of the algorithms is given below.
+
+### The naive method
+
+The most naive way of computing population count is by checking every single square to see if it's
+contained in a board.
+
+$$
+\mathit{Popcount}(BB(S)) = \sum_{s \in 0..64} I(s \in S)
+$$
+
+(where $I$ is the Boolean indicator function).
+
+This method is pretty slow, because it always takes 64 checks to create the total.
+However, because the algorithm's execution is independent of the value of $S$, it can be unrolled by
+a compiler for surprisingly good performance.
+
+### Kernighan's method
+
+This is a very old trick, attributed to Brian Kernighan (one of the creators of the Unix operating
+system).
+
+$$
+\mathit{Popcount}(BB(S)) = \left\{
+    \begin{array}{lr}
+        0 & S = \emptyset \\
+        1 + |S \backslash \{\min(S)\}| & \text{otherwise}
+    \end{array}
+\right\}
+$$
+
+This method is fastest on sparsely-populated bitboard (and grows linearly with the population of
+the bitboard).
+
+### Lookup tables
+
+We can also try to make our computation more efficient with a lookup table.
+In our case, we'll make a lookup table for the population of 8-bit numbers, and sum those
+populations up independently.
+
+$$
+\mathit{Popcount}(BB(S)) = \sum_{i = 0}^{7} \mathit{Popcount}(BB(S \cap \{8i, 8i + 1, \cdots 8i + 7\}))
+$$
+
+You can use even large lookup tables (such as 16-bit ones), but you get diminishing returns here due
+to cache pollution.
+
+## Benchmarking
+
+A `main` function is given in this homework for benchmarking these implementations against the
+standard library.
+To use it, simply execute `cargo run --release` in the terminal.
+It will give some reports on the performance of each function.
+
+## Grading
+
+Any implementation which is correct (i.e. implements all methods shown here) and passes all tests
+will receive full credit.
+Ample partial credit will be given for incomplete solutions.
+To check that your implementation gives the right results, run `cargo test`.
+
+I also recommend using `cargo clippy`, as it will give you some convenient tips, and `cargo fmt` to
+auto-format your code.
+
+Extra credit will be given for interesting analysis of the benchmarking results.
