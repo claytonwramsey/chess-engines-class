@@ -6,7 +6,7 @@ This repository contains all the source materials from that class.
 
 ## Syllabus
 
-The syllabus for the class can be found in [syllabus.md](SYLLABUS.md).
+The syllabus for the class can be found in [syllabus.md](syllabus.md).
 
 ## License
 
