@@ -42,6 +42,7 @@ Which of these statements best describe your programming experience?
 Select all that apply.
 Any answer is correct.
 
+- [x] I like writing code.
 - [x] I have never written code before.
 - [x] I have taken an introductory programming class (e.g. COMP 140).
 - [x] I have written at least one large software project before.

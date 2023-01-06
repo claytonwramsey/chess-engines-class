@@ -65,7 +65,7 @@ This operation is called _population count_, sometimes abbreviated as _popcnt_.
 We can define population count as follows:
 
 $$
-\mathit{Popcount}(BB(S)) = |S|
+\text{Popcount}(BB(S)) = |S|
 $$
 
 Computing population count is essential to board evaluation.
@@ -101,7 +101,7 @@ The most naive way of computing population count is by checking every single squ
 contained in a board.
 
 $$
-\mathit{Popcount}(BB(S)) = \sum_{s \in 0..64} I(s \in S)
+\text{Popcount}(BB(S)) = \sum_{s \in 0..64} I(s \in S)
 $$
 
 (where $I$ is the Boolean indicator function).
@@ -116,7 +116,7 @@ This is a very old trick, attributed to Brian Kernighan (one of the creators of 
 system).
 
 $$
-\mathit{Popcount}(BB(S)) = \left\{
+\text{Popcount}(BB(S)) = \left\{
     \begin{array}{lr}
         0 & S = \emptyset \\
         1 + |S \backslash \{\min(S)\}| & \text{otherwise}
@@ -134,7 +134,7 @@ In our case, we'll make a lookup table for the population of 8-bit numbers, and 
 populations up independently.
 
 $$
-\mathit{Popcount}(BB(S)) = \sum_{i = 0}^{7} \mathit{Popcount}(BB(S \cap \{8i, 8i + 1, \cdots 8i + 7\}))
+\text{Popcount}(BB(S)) = \sum_{i = 0}^{7} \text{Popcount}(BB(S \cap \{8i, 8i + 1, \cdots 8i + 7\}))
 $$
 
 You can use even large lookup tables (such as 16-bit ones), but you get diminishing returns here due

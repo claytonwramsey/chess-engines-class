@@ -21,9 +21,43 @@
 #[cfg(test)]
 mod tests;
 
-use std::{mem::transmute, time::Instant};
+use std::mem::transmute;
 
 use super::{bitboard::Bitboard, Board, Color, Direction, Move, Piece, Square, MAGIC};
+
+#[must_use]
+/// Perform a performance test on the move generator.
+/// Returns the number of independent paths to a leaf reachable in `depth` plies from a board with
+/// starting position `fen`.
+///
+/// # Inputs
+///
+/// - `fen`: A string containing the Forsyth-Edwards notation (FEN) representation of a board.
+/// - `depth`: The depth to search.
+///
+/// # Examples
+///
+/// ```
+/// use coll110_hw2::movegen::perft;
+///
+/// // Use the starting position FEN and calculate the number of legal moves.
+///
+/// // There is only ever one position reachable in zero moves.
+/// assert_eq!(perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 0), 1);
+///
+/// // There are 20 legal moves in the starting board position.
+/// assert_eq!(perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 1), 20);
+///
+/// // There are 400 legal opening lines at depth 2.
+/// assert_eq!(perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2), 400);
+/// ```
+///
+/// # Panics
+///
+/// This function may panic if `fen` is not a valid FEN string.
+pub fn perft(fen: &str, depth: u8) -> u64 {
+    todo!()
+}
 
 /// A lookup table for the legal squares a knight to move to from a given square.
 ///
@@ -576,71 +610,4 @@ fn castles(b: &Board, moves: &mut Vec<Move>) {
             moves.push(m);
         }
     }
-}
-
-#[must_use]
-#[allow(clippy::cast_precision_loss, clippy::similar_names)]
-/// Perform a performance test on the move generator.
-/// Returns the number of independent paths to a leaf reachable in `depth` plies from a board with
-/// starting position `fen`.
-///
-/// # Examples
-///
-/// ```
-/// use coll110_hw2::movegen::perft;
-///
-/// // Use the starting position FEN and calculate the number of legal moves.
-///
-/// // There is only ever one position reachable in zero moves.
-/// assert_eq!(perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 0), 1);
-///
-/// // There are 20 legal moves in the starting board position.
-/// assert_eq!(perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 1), 20);
-///
-///
-/// // There are 400 legal openings at depth 2.
-/// assert_eq!(perft("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2), 400);
-/// ```
-///
-/// # Panics
-///
-/// This function will panic if `fen` is not a legal board.
-pub fn perft(fen: &str, depth: u8) -> u64 {
-    /// The core search algorithm for perft.
-    fn helper<const DIVIDE: bool>(b: &Board, depth: u8) -> u64 {
-        let moves = get_moves(b);
-        if depth == 1 {
-            return moves.len() as u64;
-        }
-        let mut total = 0;
-        let mut bcopy;
-        for m in moves {
-            bcopy = *b;
-            bcopy.make_move(m);
-            let perft_count = helper::<false>(&bcopy, depth - 1);
-            if DIVIDE {
-                println!("{m}, {perft_count}");
-            }
-            total += perft_count;
-        }
-
-        total
-    }
-
-    let b = Board::from_fen(fen).unwrap();
-    let tic = Instant::now();
-    let num_nodes = if depth == 0 {
-        1
-    } else {
-        helper::<true>(&b, depth)
-    };
-    let toc = Instant::now();
-    let time = toc - tic;
-    let speed = (num_nodes as f64) / time.as_secs_f64();
-    println!(
-        "time {:.2} secs, num nodes {num_nodes}: {speed:.0} nodes/sec",
-        time.as_secs_f64()
-    );
-
-    num_nodes
 }

@@ -79,7 +79,7 @@ impl Move {
 
     #[inline(always)]
     #[must_use]
-    /// Create a `Move` which is tagged as a castling move.
+    /// Create a `Move` which is tagged as an en passant capture.
     pub const fn en_passant(from_square: Square, to_square: Square) -> Move {
         Move(Move::normal(from_square, to_square).0 | Move::EN_PASSANT_FLAG)
     }

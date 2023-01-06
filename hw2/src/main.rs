@@ -35,13 +35,14 @@ fn main() {
             5,
         ),
     ];
-    let mut nodes = 0;
 
     let start = Instant::now();
-    for (fen, depth) in bench_data {
-        nodes += perft(fen, depth);
-    }
+    let nodes = bench_data
+        .into_iter()
+        .map(|(fen, depth)| perft(fen, depth))
+        .sum::<u64>();
     let time_taken = Instant::now() - start;
+
     println!("Total time taken: {time_taken:?}");
     println!(
         "Final NPS: {}",

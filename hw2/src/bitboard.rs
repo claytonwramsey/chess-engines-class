@@ -121,7 +121,9 @@ impl Bitboard {
     /// ```
     /// use coll110_hw2::{Bitboard, Square};
     ///
-    /// let bb = Bitboard::EMPTY.with_square(Square::A1);
+    /// let mut bb = Bitboard::EMPTY;
+    /// bb.insert(Square::A1);
+    ///
     /// assert!(bb.contains(Square::A1));
     /// ```
     pub fn insert(&mut self, sq: Square) {
