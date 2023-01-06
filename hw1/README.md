@@ -1,7 +1,7 @@
 # COLL 110 HW1: Popcounts
 
-A common construct in a chess engine is called a _bitboard_. A bitboard is a set of squares, backed
-by a 64-bit integer.
+A common construct in a chess engine is called a _bitboard_. A bitboard is a set of squares,
+represented as a 64-bit integer.
 This allows $O(1)$ performance on set intersection, union, symmetric difference, insertion, and
 deletion.
 
@@ -23,7 +23,7 @@ The squares in between are distributed as follows:
      |  A  B  C  D  E  F  G  H
 ```
 
-We can then create a one-to-one mapping betwen sets of squars and 64-bit integers.
+We can then create a one-to-one mapping betwen sets of squares and 64-bit integers.
 Let $S \in \{0, 1\}^{64}$ We can then represent $S$ by a number as follows:
 
 $$
@@ -146,6 +146,8 @@ A `main` function is given in this homework for benchmarking these implementatio
 standard library.
 To use it, simply execute `cargo run --release` in the terminal.
 It will give some reports on the performance of each function.
+**If you simply use VS Code's "Run" button over the main method, you will not get a fully optimized
+build (and therefore your results will be meaningless)**.
 
 ## Grading
 
