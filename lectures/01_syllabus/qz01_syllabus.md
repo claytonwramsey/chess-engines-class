@@ -12,7 +12,7 @@ Select all that apply.
 
 ---
 
-Which of the following is _not_ a real thing in chess?
+Which of the following is _not_ allowed in chess?
 
 - [x] Knooks, which can move like a knight and a like a rook.
 - [ ] En passant, where pawns can capture pawns adjacent to them by moving onto the square just
@@ -61,3 +61,7 @@ All answers are correct.
 - [x] I know all the rules of chess.
 - [x] I am comfortable calculating lines in a given position in chess.
 - [x] I have an intuition for what is "good" and "bad" as a move in chess.
+
+---
+
+Feedback for me: Write anything you want me to read in here.
