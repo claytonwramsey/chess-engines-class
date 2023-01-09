@@ -116,12 +116,11 @@ This is a very old trick, attributed to Brian Kernighan (one of the creators of 
 system).
 
 $$
-\text{Popcount}(BB(S)) = \left\{
-    \begin{array}{lr}
-        0 & S = \emptyset \\
-        1 + |S \backslash \{\min(S)\}| & \text{otherwise}
-    \end{array}
-\right\}
+\text{Popcount}(BB(S)) =
+\begin{cases}
+    0 & S = \emptyset \\
+    1 + |S \backslash \{\min(S)\}| & \text{otherwise}
+\end{cases}
 $$
 
 This method is fastest on sparsely-populated bitboard (and grows linearly with the population of
