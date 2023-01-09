@@ -101,7 +101,7 @@ The most naive way of computing population count is by checking every single squ
 contained in a board.
 
 $$
-\text{Popcount}(BB(S)) = \sum_{s \in 0..64} I(s \in S)
+\text{Popcount}(BB(S)) = \sum_{s = 0}^{64} I(s \in S)
 $$
 
 (where $I$ is the Boolean indicator function).
