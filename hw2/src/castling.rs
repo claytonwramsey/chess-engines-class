@@ -23,15 +23,14 @@ use super::Color;
 use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXorAssign, Not};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-/// A simple struct to store a piece's castling rights.
-///
-/// Internally, a castling rights is represented as a packed bitmask.
-/// The bits in this mask have the following assignments:
-/// * `1 << 0` (LSB): White kingside castling.
-/// * `1 << 1`: White queenside castling.
-/// * `1 << 2`: Black kingside castling.
-/// * `1 << 3`: Black queenside castling.
-pub struct CastleRights(pub u8);
+/// A simple struct to store a player's castling rights.
+// Internally, a castling rights is represented as a packed bitmask.
+// The bits in this mask have the following assignments:
+// * `1 << 0` (LSB): White kingside castling.
+// * `1 << 1`: White queenside castling.
+// * `1 << 2`: Black kingside castling.
+// * `1 << 3`: Black queenside castling.
+pub struct CastleRights(u8);
 
 impl CastleRights {
     /// A `CastleRights` where all rights are available.

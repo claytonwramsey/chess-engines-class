@@ -46,18 +46,18 @@ $$
 Here's how we can compute some important setwise operations with a bitboard "`a`" representing some
 set $A$:
 
-|  **Mathematical operation**   |      **Bitboard implementation**      |
-| :---------------------------: | :-----------------------------------: |
-|         $ A \cup B $          |               `a \| b`                |
-|         $ A \cap B $          |                `a & b`                |
-|      $ A \backslash B $       |               `a & !b`                |
-|    $ A \bigtriangleup B $     |                `a ^ b`                |
-| $ \min(A): A \neq \emptyset $ |         `a.trailing_zeros()`          |
-| $ \max(A): A \neq \emptyset $ |       `64 - a.leading_zeros()`        |
-|  $\{x: x > 0, x + 1 \in A\}$  |               `a >> 1`                |
-| $\{x: x < 64, x - 1 \in A\}$  |               `a << 1`                |
-| $ A \backslash \{\min(A)\} $  |             `a & (a - 1)`             |
-|            $\|A\|$            | to be implemented in this assignment! |
+|    **Mathematical operation**    |      **Bitboard implementation**      |
+| :------------------------------: | :-----------------------------------: |
+|           $ A \cup B $           |               `a \| b`                |
+|           $ A \cap B $           |                `a & b`                |
+|        $ A \backslash B $        |               `a & !b`                |
+|      $ A \bigtriangleup B $      |                `a ^ b`                |
+|  $ \min(A): A \neq \emptyset $   |         `a.trailing_zeros()`          |
+|  $ \max(A): A \neq \emptyset $   |       `64 - a.leading_zeros()`        |
+| $ \{ x: x > 0, x + 1 \in A \} $  |               `a >> 1`                |
+| $ \{ x: x < 64, x - 1 \in A \} $ |               `a << 1`                |
+|  $ A \backslash \{ \min(A) \} $  |             `a & (a - 1)`             |
+|            $ \|A\| $             | to be implemented in this assignment! |
 
 Once we have a bitboard, we often have to compute the number of squares in a bitboard.
 This operation is called _population count_, sometimes abbreviated as _popcnt_.

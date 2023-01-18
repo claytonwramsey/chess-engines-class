@@ -26,22 +26,21 @@ We consider $\text{Moves}(b)$ to be a function which returns the set of all lega
 and $\text{Make(m, b)}$ to be the state of $b$ after making the move $m$.
 
 $$
-\text{Perft}(b, d) = \left\{
-    \begin{array}{lr}
-        1 & d = 0 \\
-        \sum_{m \in \text{Moves}(b)} \text{Perft}(\text{Make}(m, b), d - 1) & \text{otherwise}
-    \end{array}
-\right\}
+\text{Perft}(b, d) =
+\begin{cases}
+    1 & d = 0 \\
+    \sum_{m \in \text{Moves}(b)} \text{Perft}(\text{Make}(m, b), d - 1) & \text{otherwise}
+\end{cases}
 $$
 
 ## Your assignment
 
 Your assignment is to implement a perft routine in Rust.
 You should do this by filling out the body of `perft()` in
-[`src/movegen/mod.rs`](src/movegen/mod.rs)
+[`src/movegen/mod.rs`](src/movegen/mod.rs).
 
 I have already provided starter code for you which contains implementations of move generation and
-board making and unmaking.
+board move-making.
 `Board::from_fen` will convert a Forsyth-Edwards notation (FEN) string into a Board.
 `movegen::get_moves` will return a `Vec` containing the set of all legal moves on a `Board`.
 `Board::make_move` will make a move on a board.
@@ -71,6 +70,7 @@ If yours runs any faster, let me know!
 - You can run `cargo doc --open` to open a book containing the documentation for all the code in
   this assignment in a human-readable way.
 - You can format your code with `cargo fmt` to make it less painful to look at.
+- You can use `cargo clippy` to get a highly-opinionated linter to review your code.
 - If you want to make your perft routine really fast, try profiling it and generating a flamegraph
   with [inferno](https://github.com/jonhoo/inferno).
   This will provide really useful information on where the slow parts of your code are.

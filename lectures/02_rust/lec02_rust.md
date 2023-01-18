@@ -122,6 +122,7 @@ fn main() {
     };
 
     // free the array and its memory. goodbye! ( ◕ᴗ◕)っ✂
+    // if we didn't call this, it would have happened automatically at the end of the scope.
     drop(array);
 
     // `array` is now inaccessible because we dropped it.
@@ -138,10 +139,16 @@ fn main() {
 fn main() {
     let x: Vec<u8> = vec![1, 2, 3];
 
+    x[1] = 3;
+
     // this operation is a move.
     // To prevent multiple places from accessing the internals of `x` concurrently, `x` has now
     // been rendered inaccessible.
-    let y = x;
+    let mut y = x;
+
+    y[1] = -2;
+
+    println!("{x:?}");
 
     // Creating a reference does not move its target.
     let ref_y = &y;
