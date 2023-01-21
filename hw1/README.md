@@ -24,7 +24,8 @@ The squares in between are distributed as follows:
 ```
 
 We can then create a one-to-one mapping betwen sets of squares and 64-bit integers.
-Let $S \in \{0, 1\}^{64}$ We can then represent $S$ by a number as follows:
+Let $S \subseteq \{0, 1, \cdots 63\}$.
+We can then represent $S$ by a number as follows:
 
 $$
 BB(S) = \sum_{s \in S} 2^s
@@ -101,7 +102,7 @@ The most naive way of computing population count is by checking every single squ
 contained in a board.
 
 $$
-\text{Popcount}(BB(S)) = \sum_{s = 0}^{64} I(s \in S)
+\text{Popcount}(BB(S)) = \sum_{s = 0}^{63} I(s \in S)
 $$
 
 (where $I$ is the Boolean indicator function).
