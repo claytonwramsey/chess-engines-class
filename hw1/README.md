@@ -49,7 +49,7 @@ set $A$:
 
 |     **Mathematical operation**     |      **Bitboard implementation**      |
 | :--------------------------------: | :-----------------------------------: |
-|           $$ A \cup B $$           |               `a \| b`                |
+|           $$ A \cup B $$           |                `a | b`                |
 |           $$ A \cap B $$           |                `a & b`                |
 |        $$ A \backslash B $$        |               `a & !b`                |
 |      $$ A \bigtriangleup B $$      |                `a ^ b`                |
