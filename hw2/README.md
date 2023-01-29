@@ -54,7 +54,7 @@ There are six total tests.
 You can run them all from the command line by executing `cargo test perft`, which executes every
 test with `perft` in its name.
 
-If all six unit tests pass, you will receive a grade 100% for this assignment.
+If all six unit tests pass, you will receive a grade of 100% for this assignment.
 
 ## Benchmarking results
 
@@ -62,8 +62,10 @@ When you're done writing your perft code, you can check how fast it is by runnin
 executable with `cargo run --release`.
 It will take a little while to run, so be patient!
 
-My implementation of perft was able to run at 137 million nodes/second.
-If yours runs any faster, let me know!
+My implementation of perft for this assignment was able to run at 137 million nodes/second.
+On the engine that I built in my free time it runs at 240 million nodes/second.
+Some of the fastest perft implementations run at 2 billion nodes/second.
+If yours runs any faster than any of these, let me know!
 
 ## Tips
 

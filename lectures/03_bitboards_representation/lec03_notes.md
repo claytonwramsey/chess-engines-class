@@ -242,6 +242,7 @@ In other words, if the following expression is true:
 $$
 \sum_{\text{piece $p$ at square $s$ with color $c$ in $b_1$}} Z(p, s, c)
 =
+
 \sum_{\text{piece $p$ at square $s$ with color $c$ in $b_2$}} Z(p, s, c)
 $$
 
