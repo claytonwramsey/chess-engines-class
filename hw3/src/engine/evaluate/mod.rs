@@ -44,16 +44,16 @@ pub mod pst;
 #[derive(Clone, Copy, Debug, Eq, PartialEq, PartialOrd, Ord, Hash)]
 #[repr(C)]
 /// A wrapper for the evaluation of a position.
-/// The higher an evaluation is, the better the position is for White.
+/// The higher an evaluation is, the better the position is for the player to move.
 /// An evaluation of 0 is a draw.
 /// Internally, an evaluation is a 16-bit signed interger.
-/// The integer value is 1/100 of a pawn (so if the internal value is +2000, the position is +2
-/// pawns for White).
+/// The integer value is 1/100 of a pawn (so if the internal value is +200, the position is +2
+/// pawns for the player).
 ///
 /// Values > 29,000 are reserved for mates.
-/// 30,000 is White to mate in 0 (i.e. White has won the game), 29,999 is White to mate in 1 (White
-/// will play their move and mate), 29,998 is White to mate in 1, with Black to move (Black will
-/// play their move, then White will play their move to mate) and so on.
+/// 30,000 is player to mate in 0 (e.g. White has won the game), 29,999 is player to mate in 1
+/// (player  will play their move and mate), 29,998 is player to mate in 1, with opponent to move
+/// (opponent will play their move, then player will play their move to mate) and so on.
 /// Values of < -29,000 are reserved for black mates, likewise.
 ///
 /// # Examples
@@ -145,9 +145,9 @@ impl Eval {
     /// ```
     /// use coll110_hw3::engine::evaluate::Eval;
     ///
-    /// assert!(Eval::MIN < Eval::BLACK_MATE);
+    /// assert!(Eval::MIN < Eval::MATED);
     /// assert!(Eval::MIN < Eval::DRAW);
-    /// assert!(Eval::MIN < Eval::WHITE_MATE);
+    /// assert!(Eval::MIN < Eval::MATING);
     /// assert!(Eval::MIN < Eval::MAX);
     /// ```
     pub const MIN: Eval = Eval(-Eval::MATE_0_VAL - 1000);
@@ -160,9 +160,9 @@ impl Eval {
     /// use coll110_hw3::engine::evaluate::Eval;
     ///
     /// assert!(Eval::MIN < Eval::MAX);
-    /// assert!(Eval::BLACK_MATE < Eval::MAX);
+    /// assert!(Eval::MATED < Eval::MAX);
     /// assert!(Eval::DRAW < Eval::MAX);
-    /// assert!(Eval::WHITE_MATE < Eval::MAX);
+    /// assert!(Eval::MATING < Eval::MAX);
     /// ```
     pub const MAX: Eval = Eval(Eval::MATE_0_VAL + 1000);
 
@@ -173,26 +173,26 @@ impl Eval {
     /// ```
     /// use coll110_hw3::engine::evaluate::Eval;
     ///
-    /// assert!(Eval::MIN < Eval::BLACK_MATE);
-    /// assert!(Eval::BLACK_MATE < Eval::DRAW);
-    /// assert!(Eval::BLACK_MATE < Eval::WHITE_MATE);
-    /// assert!(Eval::BLACK_MATE < Eval::MAX);
+    /// assert!(Eval::MIN < Eval::MATED);
+    /// assert!(Eval::MATED < Eval::DRAW);
+    /// assert!(Eval::MATED < Eval::MATING);
+    /// assert!(Eval::MATED < Eval::MAX);
     /// ```
-    pub const BLACK_MATE: Eval = Eval(-Eval::MATE_0_VAL);
+    pub const MATED: Eval = Eval(-Eval::MATE_0_VAL);
 
-    /// An evaluation where White has won the game by mate.
+    /// An evaluation where the player to move has won by mate.
     ///
     /// # Examples
     ///
     /// ```
     /// use coll110_hw3::engine::evaluate::Eval;
     ///
-    /// assert!(Eval::MIN < Eval::WHITE_MATE);
-    /// assert!(Eval::BLACK_MATE < Eval::WHITE_MATE);
-    /// assert!(Eval::DRAW < Eval::WHITE_MATE);
-    /// assert!(Eval::WHITE_MATE < Eval::MAX);
+    /// assert!(Eval::MIN < Eval::MATING);
+    /// assert!(Eval::MATED < Eval::MATING);
+    /// assert!(Eval::DRAW < Eval::MATING);
+    /// assert!(Eval::MATING < Eval::MAX);
     /// ```
-    pub const WHITE_MATE: Eval = Eval(Eval::MATE_0_VAL);
+    pub const MATING: Eval = Eval(Eval::MATE_0_VAL);
 
     /// The evaluation of a drawn position.
     pub const DRAW: Eval = Eval(0);
@@ -222,83 +222,10 @@ impl Eval {
     }
 
     #[must_use]
-    /// Create an `Eval` based on the number of half-moves required for White to mate.
-    /// `-Eval::mate_in(n)` will give Black to mate in the number of plies.
+    /// Create an `Eval` based on the number of half-moves required for the player to move to mate.
+    /// `-Eval::mate_in(n)` will give the oponent to mate in the number of plies.
     pub const fn mate_in(nplies: u8) -> Eval {
         Eval(Eval::MATE_0_VAL - (nplies as i16))
-    }
-
-    #[must_use]
-    /// Step this evaluation back in time by `n` moves.
-    /// If the evaluation is within `n` steps of the mate cutoff, this will result in weird
-    /// behavior.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use coll110_hw3::engine::evaluate::Eval;
-    /// let current_eval = Eval::mate_in(0);
-    /// let previous_ply_eval = current_eval.step_back_by(1);
-    /// assert_eq!(previous_ply_eval, Eval::mate_in(1));
-    /// ```
-    pub fn step_back_by(self, n: u8) -> Eval {
-        if self.0 < -Eval::MATE_CUTOFF {
-            Eval(self.0 + i16::from(n))
-        } else if Eval::MATE_CUTOFF < self.0 {
-            Eval(self.0 - i16::from(n))
-        } else {
-            self
-        }
-    }
-
-    #[must_use]
-    /// Step this evaluation forward by a given number of steps.
-    /// If the evaluation is within `n` steps of the mate cutoff, this will result in weird
-    /// behavior.
-    pub fn step_forward_by(self, n: u8) -> Eval {
-        if self.0 < -Eval::MATE_CUTOFF {
-            Eval(self.0 - i16::from(n))
-        } else if Eval::MATE_CUTOFF < self.0 {
-            Eval(self.0 + i16::from(n))
-        } else {
-            self
-        }
-    }
-
-    #[must_use]
-    /// Is this evaluation a mate (i.e. a non-normal evaluation)?
-    pub const fn is_mate(self) -> bool {
-        self.0 > Eval::MATE_CUTOFF || self.0 < -Eval::MATE_CUTOFF
-    }
-
-    #[must_use]
-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-    /// Get the number of moves until a mated position, assuming perfect play.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use coll110_hw3::engine::evaluate::Eval;
-    /// let ev1 = Eval::pawns(2.5);
-    /// let ev2 = Eval::mate_in(3);
-    /// assert_eq!(ev1.moves_to_mate(), None);
-    /// assert_eq!(ev2.moves_to_mate(), Some(2));
-    /// ```
-    pub fn moves_to_mate(self) -> Option<u8> {
-        self.is_mate().then_some(if self.0 > 0 {
-            // white to mate
-            ((Eval::MATE_0_VAL - self.0 + 1) / 2) as u8
-        } else {
-            // black to mate
-            ((Eval::MATE_0_VAL + self.0 + 1) / 2) as u8
-        })
-    }
-
-    #[must_use]
-    /// Get the value in centipawns of this evaluation.
-    /// Will return a number with magnitude greater than 29000 for mates.
-    pub const fn centipawn_val(self) -> i16 {
-        self.0
     }
 
     #[must_use]
