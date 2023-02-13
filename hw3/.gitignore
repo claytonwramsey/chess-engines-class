@@ -1,0 +1,8 @@
+target
+Cargo.lock
+.pytest_cache
+perf.*
+*.svg
+stacks.folded
+*.epd
+*.pgn

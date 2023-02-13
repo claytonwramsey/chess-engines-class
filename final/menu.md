@@ -6,16 +6,8 @@ to give you a feel for what can be done.
 
 ## Easy tasks (<50 lines of code)
 
-These tasks are relatively easy and can usually be done in under an hour.
+These tasks are relatively easy and can usually be implemented in under an hour.
 You will likely need to reserve some time for testing the Elo gain of your changes, though.
-
-- **Late move reduction (LMR).**
-  In chess, most moves in a position are very, very bad.
-  Those bad moves need only to be searched to a low depth to prove that they're bad.
-  Construct a rule which reduces the depth to which a position is searched based on how late the
-  move came in the heuristic sorting.
-  You'll have to tune the exact numbers, but in terms of effort-to-Elo, this is one of the biggest
-  possible areas for improvement.
 
 - **Killer move heuristic.**
   Consider the following position:
