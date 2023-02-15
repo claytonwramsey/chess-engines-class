@@ -17,25 +17,10 @@
 */
 
 //! Primary search algorithms.
-//!
-//! All chess engines do some sort of tree searching, and as a classical engine,
-//! Tomato uses a variation of Minimax search.
-//! In this case, Tomato uses principal-variation search, which runs in
-//! Omega(b^{d/2}) time, so long as the move ordering is correct and causes the
-//! most critical moves to be searched first at each depth.
-//!
-//! At each leaf of the principal-variation search, a second, shorter quiescence
-//! search is performed to exhaust all captures in the position, preventing the
-//! mis-evaluation of positions with hanging pieces.
 
-use crate::{
-    base::{game::Game, movegen::has_moves},
-    engine::pick::candidacy,
-};
+use crate::base::game::Game;
 
 use super::evaluate::Eval;
-
-use super::evaluate::leaf_evaluate;
 
 #[allow(dead_code)]
 /// Use Principal Variation Search to evaluate the given game to a depth.
@@ -63,15 +48,12 @@ use super::evaluate::leaf_evaluate;
 ///     `beta` can be thought of as the worst score that the opponent of the current player to
 ///     move could get if they decided not to allow the current player to make a move.
 ///     When called externally, `beta` should be equal to `Eval::MAX`.
-/// * `parent_line`: The principal variation line of the parent position.
-///     `parent_line` will be overwritten with the best line found by this search, so long as it
-///     achieves an alpha cutoff at some point.
 pub fn pvs<const PV: bool>(
     game: &mut Game,
     depth_to_go: u8,
     depth_so_far: u8,
-    mut alpha: Eval,
-    mut beta: Eval,
+    alpha: Eval,
+    beta: Eval,
 ) -> Eval {
     todo!()
 }
