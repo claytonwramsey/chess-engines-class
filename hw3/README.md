@@ -58,7 +58,7 @@ def pvs(position, depth, alpha, beta, pv):
 
         # Alpha-beta pruning
         if best_score < score:
-            best_score := score;
+            best_score := score
 
             if alpha < score:
                 if beta < score:
@@ -98,7 +98,7 @@ terminal to get a full documentation of each item.
   - `Game::board()` returns a reference to the current board state of the game.
   - `Game::make_move()` makes a move on the game.
   - `Game::undo()` undoes the most recent move played.
-- For some `Board` b, `b.checkers` is a bitboard containing the squares containing all
+- For some `Board` `b`, `b.checkers` is a bitboard containing the squares containing all
   checkers.
   If `b.checkers` is empty, then the king is not in check.
 - `Vec` (the standard type)
@@ -118,7 +118,7 @@ Do not attempt to hardcode the results for these tests.
 ## Extra credit: mate distance pruning
 
 For extra credit, implement mate distance pruning in addition to principal variation search.
-Mate distance pruning is a form of tree pruning which prevetns searching at a depth when you know
+Mate distance pruning is a form of tree pruning which prevents searching at a depth when you know
 that you cannot prevent a mate, or that you already have a faster mate than the current depth.
 For more information, refer to the
 [page on the Chess Programming Wiki](https://www.chessprogramming.org/Mate_Distance_Pruning).
