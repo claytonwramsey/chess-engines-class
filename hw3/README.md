@@ -31,29 +31,37 @@ including the Internet, so long as you cite your sources.
 Here is the pseudocode for implementing PVS:
 
 ```py
-def pvs(position, depth, alpha, beta, pv):
-    if depth = 0:
-        return (leaf_evaluate(position), nil)
-
+def pvs(position, depth_so_far, depth_to_go, alpha, beta, pv):
+    if depth_to_go = 0:
+        return leaf_evaluate(position)
     if position.drawn():
         return 0
 
     best_score := -infinity
-
     for i, m in enumerate(position.moves()), sorted in ascending order of candidacy:
         position.make(m)
-
         score := -infinity
 
         # Attempt to prove that the principal variation is best
         if not pv or i > 0:
-            score := -pvs(position, depth - 1, -alpha - 1, -alpha, false)
+            score := -pvs(
+              position,
+              depth_so_far + 1,
+              depth_to_go - 1,
+              -alpha - 1,
+              -alpha,
+              false)
 
         # if the proof failed, or if we have no principal variation yet,
         # perform a principal variation search.
         if pv and (i = 0 or alpha < score < beta):
-            score := -pvs(position, depth - 1, -beta, -alpha, true)
-
+            score := -pvs(
+              position,
+              depth_so_far + 1,
+              depth_to_go - 1,
+              -beta,
+              -alpha,
+              true)
         position.undo()
 
         # Alpha-beta pruning
@@ -69,16 +77,10 @@ def pvs(position, depth, alpha, beta, pv):
         if king is in check:
             return 0
         else:
-            return (mated in depth)
+            return (mated in depth_so_far)
 
     return best_score
 ```
-
-There are a few key differences between the pseudocode and what you'll have to implement:
-
-- In addition to `depth` (which corresponds to `depth_to_go`), there is also `depth_so_far`.
-  You are not required to use `depth_so_far`, but it will be very helpful to you if you decide to do
-  the extra credit.
 
 ### Useful functions for you
 
@@ -87,10 +89,14 @@ In order to read more detail on each item, run `cargo doc --open` in your
 terminal to get a full documentation of each item.
 
 - `Eval`
-  - `Eval::mate_in` yields a high positive score for mating.
-    `-Eval::mate_in(n)` yields a score equivalent to getting mated.
+  - `Eval::mate_in` yields a high positive score for mating (i.e. corresponding to mating the
+    opponent).
+    `-Eval::mate_in(n)` yields a score equivalent to getting mated (this should be notable for being
+    equivalent to "mated in n").
   - `Eval::MIN` behaves much like -infinity in pseudocode.
   - `Eval::DRAW` behaves much like 0 in pseudocode.
+  - `Eval::centipawns()` converts an integer value to an evaluation.
+    Notably, `Eval::centipawns(1)` is the smallest possible `Eval`.
 - `leaf_evaluate()` returns a heuristic evaluation of a game.
 - `Game` can be used to do most of the heavy lifting on games:
   - `Game::get_moves()` returns a vector of legal moves (but does not check for draws or mates).
@@ -104,6 +110,8 @@ terminal to get a full documentation of each item.
 - `Vec` (the standard type)
   - `Vec::sort_by_cached_key` takes a function which creates a totally-ordered key from each of its
     elements and then sorts in ascending order by those keys.
+    Note that this function does _not_ return a new `Vec` and instead mutates the contents of the
+    original vector!
 - `candidacy()` returns a heuristic candidacy for each move.
   High candidacies correspond to promising moves.
 
