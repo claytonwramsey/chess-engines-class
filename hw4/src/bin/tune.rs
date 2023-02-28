@@ -54,20 +54,7 @@ use tomato::engine::evaluate::{material, phase_of, pst::PST};
 /// Returns a pair containing the gradient vector of error with respect to weights and the
 /// sum-squared error across this epoch.
 fn compute_gradient(observations: &[(Vec<(usize, f32)>, f32)], weights: &[f32]) -> (Vec<f32>, f32) {
-    let mut grad = vec![0.; weights.len()];
-    let mut sum_se = 0.;
-    for (features, sigm_expected) in observations {
-        let sigm_eval = sigmoid(features.iter().map(|&(idx, val)| val * weights[idx]).sum());
-        let err = sigm_expected - sigm_eval;
-        let coeff = -sigm_eval * (1. - sigm_eval) * err;
-        // construct the gradient
-        for &(idx, feat_val) in features {
-            grad[idx] += feat_val * coeff;
-        }
-        sum_se += err * err;
-    }
-
-    (grad, sum_se)
+    todo!()
 }
 
 #[allow(clippy::similar_names)]
