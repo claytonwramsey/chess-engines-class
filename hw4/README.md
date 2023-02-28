@@ -55,14 +55,14 @@ What we might try to do to find the optimal $\bold w$ is to find one which minim
 between $l(\bold w, b)$ and $y(b)$ over every board $b$ in the set of all training boards $B$:
 
 $$
-\bold w^* = \argmin_{\bold w} \frac{1}{2} \sum_{b \in B} |l(\bold w, b) - y(b)|^2
+\bold {w}^* = \arg \min_{\bold w} \frac{1}{2} \sum_{b \in B} |l(\bold w, b) - y(b)|^2
 $$
 
 _However, this has a problem!_
 If we doubled the features on $\bold x$, the leaf evaluation $l(b)$ would double - and our error
 would increase, even if we were confident about the fact that we were winning!
 
-**Idea: use some function to squeeze l(b) to look more like y(b)**.
+**Idea: use some function to squeeze $l(b)$ to look more like $y(b)$**.
 We want a function $\sigma(l)$ which is roughly 1 when $l$ is big and roughly 0 when $l$ is small,
 varying smoothly in between.
 
@@ -75,10 +75,10 @@ $$
 Now we can find an actually useful formulation:
 
 $$
-\bold w^* = \argmin_{\bold w} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2
+\bold w^* = \arg \max{\bold w} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2
 $$
 
-This is a nice problem, but we have a problem - there's no analytic solution!
+This is a nice problem, but we have an issue - there's no analytic solution!
 Luckily, this problem is convex, smooth, and differentiable - so gradient descent works.
 Let's calculate the gradient of our loss function with respect to $\bold w$:
 
@@ -132,8 +132,7 @@ Tomato.
 1. Implement the function `compute_gradient()` in [`src/bin/tune.rs`](src/bin/tune.rs).
    This function computes the gradient
    $\nabla_{\bold w} \left( \frac{1}{2} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2 \right)$,
-   as well as the value of the loss function
-   $\sum \_ {b \in B} |\sigma(l(\bold w, b)) - y(b)|^2 $.
+   as well as the mean squared error.
    For more details, you can refer to the documentation in the function.
    At this point, `cargo test --bin tune` should succeed.
 
@@ -154,7 +153,7 @@ Tomato.
    This will be the longest step of the process.
 
 1. Report the results of the tournament in a file named `report.txt`.
-   The contents "Results" popup here is sufficient.
+   The contents of the "Results" popup here is sufficient.
 
 This process should take roughly half an hour of coding, but will require a few hours of just
 letting stuff run in the background while you wait for things to happen.
