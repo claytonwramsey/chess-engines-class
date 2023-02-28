@@ -135,6 +135,7 @@ Tomato.
    as well as the value of the loss function
    $\sum \_ {b \in B} |\sigma(l(\bold w, b)) - y(b)|^2 $.
    For more details, you can refer to the documentation in the function.
+   At this point, `cargo test --bin tune` should succeed.
 
 1. Run the tuner by running `cargo run --release --bin tune quiet-labeled.epd`.
    If you completed the previous step right, you should find that the mean squared error constantly
