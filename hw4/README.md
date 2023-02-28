@@ -75,7 +75,7 @@ $$
 Now we can find an actually useful formulation:
 
 $$
-\bold w^* = \arg \max{\bold w} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2
+\bold w^* = \arg \min_{\bold w} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2
 $$
 
 This is a nice problem, but we have an issue - there's no analytic solution!
