@@ -82,7 +82,7 @@ pub fn main() {
     let input_sets = extract_epd(path_str).unwrap();
 
     let toc = Instant::now();
-    println!("extracted data in {} secs", (toc - tic).as_secs());
+    println!("extracted data in {:.2} secs", (toc - tic).as_secs_f32());
     for i in 0..10_000 {
         weights = train_step(&input_sets, &weights, learn_rate, nthreads).0;
         println!("iteration {i}...");
