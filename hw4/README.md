@@ -22,22 +22,22 @@ centipawns in the midgame and also in the endgame.
 ### The math
 
 Let's try to formulate this model mathematically.
-First, we'll assume that every board $b$ has some feature vector $\bold {x}(b)$.
-Each element of $\bold {x}(b)$ corresponds to one "fact" about the board - for example,
-$\bold x(b)_0$ can be the net number of knights on the board, weighted by phase of the game.
+First, we'll assume that every board $b$ has some feature vector $\bm {x}(b)$.
+Each element of $\bm {x}(b)$ corresponds to one "fact" about the board - for example,
+$\bm x(b)_0$ can be the net number of knights on the board, weighted by phase of the game.
 In a game where Black has 2 knights, White has 1 knight, and the game is 75% midgame and 25%
-endgame (i.e. a phase of 0.25), $\bold x(b)_0$ is $0.75 \cdot (1 - 2) = -0.75$.
+endgame (i.e. a phase of 0.25), $\bm x(b)_0$ is $0.75 \cdot (1 - 2) = -0.75$.
 
-Next, let's imagine that the values for each rule can be expressed as some weight vector $\bold w$.
-For example, $\bold w_0$ is the value of a knight in the middle-game, so right now it's $3$.
+Next, let's imagine that the values for each rule can be expressed as some weight vector $\bm w$.
+For example, $\bm w_0$ is the value of a knight in the middle-game, so right now it's $3$.
 Now, to evaluate the leaf evaluation $l(b)$, we can construct it as an inner product of these two
 vectors:
 
 $$
-l(\bold w, b) = \bold w^T \bold x(b)
+l(\bm w, b) = \bm w^T \bm x(b)
 $$
 
-What we'd like to do is find some weight vector $\bold w$ such that $l(\bold w, b)$ is high for
+What we'd like to do is find some weight vector $\bm w$ such that $l(\bm w, b)$ is high for
 winning positions and low for losing positions.
 Our annotated dataset can help us figure this out.
 Each position in `quiet-labeled.epd` is annotated with some result $y(b)$, which is defined as
@@ -51,15 +51,15 @@ y(b) = \begin{cases}
 \end{cases}
 $$
 
-What we might try to do to find the optimal $\bold w$ is to find one which minimizes the difference
-between $l(\bold w, b)$ and $y(b)$ over every board $b$ in the set of all training boards $B$:
+What we might try to do to find the optimal $\bm w$ is to find one which minimizes the difference
+between $l(\bm w, b)$ and $y(b)$ over every board $b$ in the set of all training boards $B$:
 
 $$
-\bold {w}^* = \arg \min_{\bold w} \frac{1}{2} \sum_{b \in B} |l(\bold w, b) - y(b)|^2
+\bm {w}^* = \arg \min_{\bm w} \frac{1}{2} \sum_{b \in B} |l(\bm w, b) - y(b)|^2
 $$
 
 _However, this has a problem!_
-If we doubled the features on $\bold x$, the leaf evaluation $l(b)$ would double - and our error
+If we doubled the features on $\bm x$, the leaf evaluation $l(b)$ would double - and our error
 would increase, even if we were confident about the fact that we were winning!
 
 **Idea: use some function to squeeze $l(b)$ to look more like $y(b)$**.
@@ -75,41 +75,41 @@ $$
 Now we can find an actually useful formulation:
 
 $$
-\bold w^* = \arg \min_{\bold w} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2
+\bm w^* = \arg \min_{\bm w} \sum_{b \in B} |\sigma(l(\bm w, b)) - y(b)|^2
 $$
 
 This is a nice problem, but we have an issue - there's no analytic solution!
 Luckily, this problem is convex, smooth, and differentiable - so gradient descent works.
-Let's calculate the gradient of our loss function with respect to $\bold w$:
+Let's calculate the gradient of our loss function with respect to $\bm w$:
 
 $$
 \begin{aligned}
-\nabla_{\bold w} \left( \frac{1}{2} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2 \right)
-    &= \sum_{b \in B} (\sigma(l(\bold w, b)) - y(b)) \nabla_{\bold w}(\sigma(l(\bold w, b))) \\
+\nabla_{\bm w} \left( \frac{1}{2} \sum_{b \in B} |\sigma(l(\bm w, b)) - y(b)|^2 \right)
+    &= \sum_{b \in B} (\sigma(l(\bm w, b)) - y(b)) \nabla_{\bm w}(\sigma(l(\bm w, b))) \\
     &= \sum_{b \in B}
-        (\sigma(\bold w^T \bold x(b)) - y(b))
-        \cdot \sigma(\bold w^T \bold x(b))
-        \cdot (1 - \sigma(\bold w^T \bold x(b)))
-        \cdot \bold x(b)
+        (\sigma(\bm w^T \bm x(b)) - y(b))
+        \cdot \sigma(\bm w^T \bm x(b))
+        \cdot (1 - \sigma(\bm w^T \bm x(b)))
+        \cdot \bm x(b)
 \end{aligned}
 $$
 
 (a useful fact about our sigmoid function is that
 $\frac{d}{dx}\sigma(x) = \sigma(x) (1 - \sigma(x))$).
 
-We can now use gradient descent to find our ideal value of $\bold w$.
+We can now use gradient descent to find our ideal value of $\bm w$.
 
 ### Sparse vectors
 
-Computing $\bold w^T \bold x(b)$ is by far the most computationally expensive step of gradient
+Computing $\bm w^T \bm x(b)$ is by far the most computationally expensive step of gradient
 descent.
-Additionally, most of the elements of $\bold x(b)$ are going to be zero.
+Additionally, most of the elements of $\bm x(b)$ are going to be zero.
 This means we waste a lot of time computing the product of zero and some other number.
 
 We can speed it up by using a sparse representation of our feature vector.
-Instead of just a pure array of numbers, we can instead represent $\bold x(b)$ as a sparse vector:
+Instead of just a pure array of numbers, we can instead represent $\bm x(b)$ as a sparse vector:
 it is instead a list of `(index, value)` pairs.
-In Rust, we represent $\bold x(b)$ as a `Vec<(usize, f32)>`.
+In Rust, we represent $\bm x(b)$ as a `Vec<(usize, f32)>`.
 
 To save you some grief: here's a quick Rust one-liner for evaluating the inner product:
 
@@ -131,7 +131,7 @@ Tomato.
 
 1. Implement the function `compute_gradient()` in [`src/bin/tune.rs`](src/bin/tune.rs).
    This function computes the gradient
-   $\nabla_{\bold w} \left( \frac{1}{2} \sum_{b \in B} |\sigma(l(\bold w, b)) - y(b)|^2 \right)$,
+   $\nabla_{\bm w} \left( \frac{1}{2} \sum_{b \in B} |\sigma(l(\bm w, b)) - y(b)|^2 \right)$,
    as well as the mean squared error.
    For more details, you can refer to the documentation in the function.
    At this point, `cargo test --bin tune` should succeed.
