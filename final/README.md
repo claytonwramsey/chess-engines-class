@@ -13,7 +13,8 @@ For you final project, you must:
    but if you want you can also try [Stockfish](https://github.com/official-stockfish/Stockfish) or
    [Leela](https://github.com/LeelaChessZero/lc0) if you want a challenge).
 1. Implement a feature or optimization of your choosing on the engine.
-   I've provided a sample menu of possible projects in the attached menu.
+   I've provided a sample menu of possible projects in the attached [menu](menu.md); however, you
+   may choose to come up with your own ideas as well.
 1. Benchmark the effects of your change by testing against another engine with Cute Chess.
 1. Present your results on the last day of class.
 
