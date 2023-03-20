@@ -44,6 +44,12 @@ You will present these results on the last day of class.
 I will also invite people who have sponsored the course (such as our faculty sponsor, Joe Young) and
 maybe bring snacks.
 
+## Tournament
+
+I will host a brief tournament after you have all submitted your final projects.
+The format will be a round robin, using a broad sample of openings.
+The winner of the tournament will receive some extra credit.
+
 ## Grading
 
 This assignment is graded out of 15 points total:
@@ -51,6 +57,7 @@ This assignment is graded out of 15 points total:
 - 5 points: correct implementation of your feature
 - 5 points: benchmarked results
 - 5 points: presentation
+- (Extra credit) 5 points: tournament victory
 
 ## Alternate option: choose your own adventure
 

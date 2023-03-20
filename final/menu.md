@@ -55,6 +55,11 @@ You will likely need to reserve some time for testing the Elo gain of your chang
   In other words, add a rule so that if a move is ever repeated in a search, we can immediately call
   that line a draw.
 
+- **Late move reduction.**
+  Moves which are searched late in the search tree are often bad.
+  Reduce the search depth of the engine for late moves and observe how much of a performance gain
+  that causes.
+
 ## Medium tasks (50 - 500 lines of code)
 
 - **Phased move generation.**
